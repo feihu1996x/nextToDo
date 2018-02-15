@@ -19,14 +19,14 @@
 <script>
 export default {
     props:{
-        filter:{
-            type:String,
-            required:true,
-        },
-    todos: {
-        type:Array,
-        required: true,
-    }
+		filter:{
+			type:String,
+			required:true,
+		},
+		todos: {
+			type:Array,
+			required: true,
+		}
     },
 	computed:{
 		unFinishedTodoLength(){   //计算left的items的长度
