@@ -45,7 +45,7 @@ export default {
 				return this.todos
 			}
 			const completed = this.filter === 'completed'
-			return this.todos.filter(todo => completed ===todo.completed)
+			return this.todos.filter(todo => completed === todo.completed)
 		},
 	},
 	methods: {
@@ -55,16 +55,16 @@ export default {
 			}
 			else{
 				this.todos.unshift({
-				id:id++,
-				content: e.target.value.trim(),
-				completed:false
-			}),
-			e.target.value =''
+                    id:id++,
+                    content: e.target.value.trim(),
+                    completed:false
+			    }),
+			    e.target.value =''
 			}
 			
 		},
 		deleteTodo(id){
-		//  console.log(todo => todo.id ===id);
+			//  console.log(todo => todo.id ===id);
 			this.todos.splice(this.todos.findIndex(todo => todo.id ===id),1)
 		},
 		toggleFilter(state){

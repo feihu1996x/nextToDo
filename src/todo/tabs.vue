@@ -29,8 +29,8 @@ export default {
 		}
     },
 	computed:{
-		unFinishedTodoLength(){   //计算left的items的长度
-			return(this.todos.filter(todo => !todo.completed).length) 
+		unFinishedTodoLength(){   // 计算left的items的长度
+			return (this.todos.filter(todo => !todo.completed).length) 
 		}
 	},
 	data(){

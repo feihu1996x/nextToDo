@@ -21,12 +21,12 @@ export default {
 			required: true
 		}
 	},
-  methods: {
-    deletetodo() {
-	  // 触发事件
-      this.$emit("del", this.todo.id);
-    }
-  }
+	methods: {
+		deletetodo() {
+			// 触发事件
+			this.$emit("del", this.todo.id);
+		}
+	}
 };
 </script>
 
