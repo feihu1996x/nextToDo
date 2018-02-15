@@ -1,6 +1,6 @@
 <template>
   <header class="main-header">
-      <h1>feihuTodo</h1>
+      <h1>angelaTodo</h1>
   </header>
 </template>
 <style lang="stylus" scoped>

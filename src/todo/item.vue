@@ -1,4 +1,5 @@
 <template>
+	<!-- 动态属性 -->
     <div :class="['todo-item',todo.completed ? 'completed' :'' ]">
         <input 
         type="checkbox"
@@ -12,12 +13,14 @@
 
 <script>
 export default {
-  props: {
-    todo: {
-      type: Object,
-      required: true
-    }
-  },
+	props: {
+		// "todo"是从父组件传递过来的参数
+		// 并进行了Prop 验证
+		todo: {
+			type: Object,
+			required: true
+		}
+	},
   methods: {
     deletetodo() {
 	  // 触发事件

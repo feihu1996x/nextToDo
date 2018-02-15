@@ -1,17 +1,23 @@
 
 <template>
-   <div id="app">
-       <div id="cover"></div>
+    <div id="app">
+       <!-- 背景虚化 -->
+        <div id="cover"></div>
         <Header></Header>    
         <todo></todo>
         <Footer></Footer>   
-   </div>
+    </div>
 </template>
+
 <script>
+// 导入header组件
 import Header from './todo/header.vue'
+// 导入footer组件
 import Footer from './todo/footer.jsx'
+// 导入todo组件
 import todo from './todo/todo.vue'
 export default {
+    // 声明在app.vue中要使用的组件
    components: {
        Header,
        Footer,

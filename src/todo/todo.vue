@@ -22,7 +22,9 @@
     </section>   
 </template>
 <script>
+// 导入item组件
 import Item from './item.vue'
+// 导入tabs组件
 import Tabs from './tabs.vue'
 let id = 0
 export default {
@@ -31,46 +33,47 @@ export default {
             todos:[],
             filter:"all"
         }
+	},
+	// 声明要在todo.vue中要使用的组件
+    components: {
+        Item,
+        Tabs
     },
-  components: {
-      Item,
-      Tabs
-  },
-  computed:{
-      filteredTodos(){
-          if (this.filter === 'all'){
-              return this.todos
-          }
-          const completed = this.filter === 'completed'
-          return this.todos.filter(todo => completed ===todo.completed)
-      },
-  },
-  methods: {
-      addTodo(e){
-         if(e.target.value==''){
-             alert("你什么都没有添加哦")
-         }
-         else{
-             this.todos.unshift({
-              id:id++,
-              content: e.target.value.trim(),
-              completed:false
-          }),
-          e.target.value =''
-         }
-          
-      },
-     deleteTodo(id){
-        //  console.log(todo => todo.id ===id);
-         this.todos.splice(this.todos.findIndex(todo => todo.id ===id),1)
-     },
-     toggleFilter(state){
-         this.filter =state
-     },
-     clearAllCompleted(){
-         this.todos = this.todos.filter(todo => !todo.completed)
-     }
-  },
+	computed:{
+		filteredTodos(){
+			if (this.filter === 'all'){
+				return this.todos
+			}
+			const completed = this.filter === 'completed'
+			return this.todos.filter(todo => completed ===todo.completed)
+		},
+	},
+	methods: {
+		addTodo(e){
+			if(e.target.value==''){
+				alert("你什么都没有添加哦")
+			}
+			else{
+				this.todos.unshift({
+				id:id++,
+				content: e.target.value.trim(),
+				completed:false
+			}),
+			e.target.value =''
+			}
+			
+		},
+		deleteTodo(id){
+		//  console.log(todo => todo.id ===id);
+			this.todos.splice(this.todos.findIndex(todo => todo.id ===id),1)
+		},
+		toggleFilter(state){
+			this.filter =state
+		},
+		clearAllCompleted(){
+			this.todos = this.todos.filter(todo => !todo.completed)
+		}
+	},
 }
 </script>
 <style lang="stylus" scoped>

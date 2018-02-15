@@ -23,29 +23,29 @@ export default {
             type:String,
             required:true,
         },
-      todos: {
-           type:Array,
-           required: true,
-      }
+    todos: {
+        type:Array,
+        required: true,
+    }
     },
-    computed:{
-      unFinishedTodoLength(){   //计算left的items的长度
-          return(this.todos.filter(todo => !todo.completed).length) 
-      }
-  },
-  data(){
-      return {
-          states:['all','active','completed']
-      }
-  },
-  methods:{
-      toggleFilter(state){ 
-          this.$emit('toggle',state)
-        },
-      clearAllCompleted(){
-         this.$emit('clearAll')
-      }
-  }
+	computed:{
+		unFinishedTodoLength(){   //计算left的items的长度
+			return(this.todos.filter(todo => !todo.completed).length) 
+		}
+	},
+	data(){
+		return {
+			states:['all','active','completed']
+		}
+	},
+	methods:{
+		toggleFilter(state){ 
+			this.$emit('toggle',state)
+		},
+		clearAllCompleted(){
+			this.$emit('clearAll')
+		}
+	}
 }
 </script>
 <style lang="stylus" scoped>

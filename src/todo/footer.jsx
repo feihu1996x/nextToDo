@@ -1,5 +1,8 @@
 // 相对于.vue，.jsx可以使用功能更强大的JavaScript代码
+
+// 导入footer样式文件
 import '../assets/styles/footer.styl'
+
 export default {
     data() {
         return{
