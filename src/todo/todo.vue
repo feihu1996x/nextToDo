@@ -26,11 +26,15 @@
 import Item from './item.vue'
 // 导入tabs组件
 import Tabs from './tabs.vue'
+
+import store from './store.js'
+
 let id = 0
 export default {
     data() {
         return {
-            todos:[],
+			// 从服务器获取初始化数据
+            todos:store.fetch() || [],
             filter:"all"
         }
 	},
@@ -74,6 +78,14 @@ export default {
 			this.todos = this.todos.filter(todo => !todo.completed)
 		}
 	},
+	watch: {
+		todos: {
+			handler: function(todos){
+				store.save(todos)		 
+			},
+			deep: true
+		}	   
+	}
 }
 </script>
 <style lang="stylus" scoped>

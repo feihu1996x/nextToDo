@@ -1,6 +1,7 @@
 const path = require('path')
 const HTMLPlugin = require('html-webpack-plugin')
 const webpack = require('webpack')
+const child_process = require('child_process');
 
 // 将静态资源文件单独打包
 const ExtractPlugin = require('extract-text-webpack-plugin')
@@ -17,6 +18,10 @@ const config = {
     },
     module:{
         rules:[
+			{
+				test: /\.js$/,
+				loader: 'babel-loader'
+			},
             {
                 // 加载vue组件
                 test: /\.vue$/,
@@ -134,4 +139,8 @@ else{
     )
 }
 
+// 复制server.js到dist目录
+child_process.exec("cp -rf server.js "+config.output.path)
+
 module.exports = config
+
