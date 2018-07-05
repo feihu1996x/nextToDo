@@ -144,7 +144,7 @@ else{
 }
 
 // 复制server.js到dist目录
-child_process.exec("cp -rf server.js "+config.output.path)
+// child_process.exec("cp -rf server.js "+config.output.path)
 
 module.exports = config
 
