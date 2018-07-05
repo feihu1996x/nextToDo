@@ -2,10 +2,10 @@
 <template>
     <div id="app">
        <!-- 背景虚化 -->
-        <div id="cover"></div>
         <Header></Header>    
-        <todo></todo>
+        <Todo></Todo>
         <Footer></Footer>   
+        <Forkme></Forkme>  
     </div>
 </template>
 
@@ -15,13 +15,16 @@ import Header from './todo/header.vue'
 // 导入footer组件
 import Footer from './todo/footer.jsx'
 // 导入todo组件
-import todo from './todo/todo.vue'
+import Todo from './todo/todo.vue'
+// 导入forkme组件
+import Forkme from './todo/forkme.vue'
 export default {
     // 声明在app.vue中要使用的组件
    components: {
        Header,
        Footer,
-       todo
+       Todo,
+       Forkme
    }
 }
 </script>
@@ -33,16 +36,6 @@ export default {
     right 0
     top 0
     bottom 0
-}
-#cover{
-    position absolute
-    left 0
-    right 0
-    top 0
-    bottom 0
-    background-color #999
-    opacity .9
-    z-index -1
 }
 </style>
 

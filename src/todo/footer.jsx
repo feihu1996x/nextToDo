@@ -6,7 +6,8 @@ import '../assets/styles/footer.styl'
 export default {
     data() {
         return{
-            author: 'feihu1996.cn'
+            author: 'feihu1996.cn',
+            description: "Fork me on GitHub"
         }
     },
     render() {
