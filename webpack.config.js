@@ -62,7 +62,11 @@ const config = {
                 NODE_ENV: isDev ? '"development"' : '"production"'
             }
         }),
-        new HTMLPlugin()
+        new HTMLPlugin({
+            filename: 'index.html',
+            template: 'index.html',
+            inject: true
+        })
     ]
 }
 
