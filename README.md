@@ -1,6 +1,6 @@
 # nextToDo
 
-> A todo web application built with the Vue.js and Webpack
+> A todo web application built with Vue.js + Webpack
 
 ## Build Setup
 
