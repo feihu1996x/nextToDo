@@ -1,13 +1,21 @@
-## 使用vue+webpack打造的todo应用
+# nextToDo
 
-## 安装编译项目所需的npm包
+> A todo web application built with the Vue.js and Webpack
 
-    npm install
+## Build Setup
 
-## 启动开发服务器
+``` bash
+# install dependencies
+npm install
 
-    npm run dev
+# serve with hot reload
+npm run dev
 
-## TODO
+# build for production with minification
+npm run build
+```
 
-- 把项目部署上线
+## Website
+
+[nextToDo](http://dev.feihu1996.cn/nextToDo 'nextToDol')
+
