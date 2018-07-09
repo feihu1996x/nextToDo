@@ -19,3 +19,7 @@ npm run build
 
 [nextToDo](http://dev.feihu1996.cn/nextToDo 'nextToDol')
 
+## TODO
+
+- add todo item detail editing feature
+
