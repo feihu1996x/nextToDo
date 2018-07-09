@@ -21,5 +21,6 @@ npm run build
 
 ## TODO
 
+- add user login and logout feature
 - add todo item detail editing feature
 
