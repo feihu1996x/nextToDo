@@ -1,10 +1,25 @@
 # nextToDo
 
-> A todo web application built with Vue.js + Webpack
+## 项目描述
+
+A todo web application built with Vue.js + Webpack
+
+## 技术栈
+
+HTML
+CSS
+JavaScript
+Vue.js
+Webpack
+Node.js
+Express
+Docker
+Nginx
 
 ## Build Setup
 
 ``` bash
+
 # install dependencies
 npm install
 
@@ -19,5 +34,6 @@ npm run build-server
 
 # run the server
 npm run server
+
 ```
 
