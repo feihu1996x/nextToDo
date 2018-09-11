@@ -2,7 +2,7 @@
 
 ## 项目描述
 
-A todo web application built with Vue.js + Webpack
+Web Todo应用
 
 ## 技术栈
 
