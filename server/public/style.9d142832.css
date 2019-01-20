@@ -13,7 +13,7 @@ body {
   height: 100%;
 }
 body {
-  background-image: url(/nextToDo/static/bg.jpg);
+  background-image: url(/static/bg.jpg);
   background-size: cover;
   background-position: center;
   font: 14px 'microsoft yahei';

@@ -1116,13 +1116,13 @@ module.exports = function escape(url) {
 /* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "/nextToDo/static/round.png";
+module.exports = __webpack_require__.p + "/static/round.png";
 
 /***/ }),
 /* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "/nextToDo/static/done.png";
+module.exports = __webpack_require__.p + "/static/done.png";
 
 /***/ }),
 /* 32 */
