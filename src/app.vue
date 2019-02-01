@@ -21,7 +21,7 @@ export default {
        Header,
        Footer,
        Todo
-   }
+   },
 }
 </script>
 <style lang="stylus" scoped>

@@ -22,12 +22,6 @@ npm run dev
 
 # build for production with minification
 npm run build
-
-# build the server
-npm run build-server
-
-# run the server
-npm run server
 ```
 
 ## Demo Link
