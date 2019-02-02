@@ -7,14 +7,16 @@
         placeholder="task to do?"
         @keyup.enter="addTodo"
         >
-        <Item 
-        :todo="todo"
-        v-for="todo in filteredTodos"
-        :key="todo.id"
-        @del="deleteTodo"
-        ></Item>   
-        <Tabs 
-        :filter="filter" 
+        <div class="item-wrapper">
+            <Item
+                    :todo="todo"
+                    v-for="todo in filteredTodos"
+                    :key="todo.id"
+                    @del="deleteTodo"
+            ></Item>
+        </div>
+        <Tabs
+        :filter="filter"
         :todos="todos"
         @toggle="toggleFilter"
         @clearAll="clearAllCompleted"
@@ -62,7 +64,7 @@ export default {
                     id:id++,
                     content: e.target.value.trim(),
                     completed:false
-			    }),
+			    })
 			    e.target.value =''
 			}
 			
@@ -90,9 +92,15 @@ export default {
 </script>
 <style lang="stylus" scoped>
 .real-app{
-    width 600px
-    margin :0px  auto
-    box-shadow :0px 0px 5px #666
+    width 600px;
+    margin :0px  auto;
+    box-shadow :0px 0px 5px #666;
+    opacity: 0.8;
+}
+.item-wrapper {
+    max-height 300px;
+    overflow-x:hidden;
+    overflow-y: auto;
 }
 .add-input{
     positon:relative;
