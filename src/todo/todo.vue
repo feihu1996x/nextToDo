@@ -37,7 +37,7 @@ export default {
         return {
 			// 从服务器获取初始化数据
             todos:store.fetch() || [],
-            filter:"all"
+            filter:"active"
         }
 	},
 	// 声明要在todo.vue中要使用的组件
