@@ -31,7 +31,6 @@ import Tabs from './tabs.vue'
 
 import store from './store.js'
 
-let id = 0
 export default {
     data() {
         return {
@@ -56,12 +55,13 @@ export default {
 	},
 	methods: {
 		addTodo(e){
+            let id = this.todos.length?this.todos[0].id:0
 			if(e.target.value==''){
 				alert("你什么都没有添加哦")
 			}
 			else{
 				this.todos.unshift({
-                    id:id++,
+                    id:++id,
                     content: e.target.value.trim(),
                     completed:false
 			    })
