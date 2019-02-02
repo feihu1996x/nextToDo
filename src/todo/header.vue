@@ -1,6 +1,6 @@
 <template>
   <header class="main-header">
-      <h1>nextTodo</h1>
+      <h1>nextToDo</h1>
   </header>
 </template>
 <style lang="stylus" scoped>

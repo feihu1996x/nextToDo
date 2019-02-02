@@ -6,7 +6,7 @@
  * @version: 1.0
  */
 
-const STORAGE_KEY = "angelaTodo"
+const STORAGE_KEY = "nextToDo"
 
 class Store {
 	fetch()
