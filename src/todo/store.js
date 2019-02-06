@@ -12,12 +12,17 @@ class Store {
 	fetch()
 	{
 		// 从localStorage中获取items
-		return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+		let data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
+		if (!data || !data.length) {
+			// TODO:从服务器拉取数据
+		}
+		return data
 	}
 	save(items)
 	{
 		// 将items保存到localStorage中
-		localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+		localStorage.setItem(STORAGE_KEY, JSON.stringify(items))
+		// TODO:将数据上传至服务器
 	}
 }
 
