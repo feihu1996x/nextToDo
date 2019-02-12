@@ -1,13 +1,12 @@
-# nextToDoApi
+nextToDoApi
+===
 
-> nextToDo Api
-
-## Build Setup
+> nextToDo api
 
 ```bash
 # install dependencies
 npm install
 
-# start web app
+# start app
 npm run start
 ```
