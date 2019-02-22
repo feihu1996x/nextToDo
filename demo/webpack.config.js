@@ -11,7 +11,7 @@ const isDev = process.env.NODE_ENV === "development"
 const config = {
     // 这是一个web项目
     target: "web",
-    entry: path.join(__dirname, 'src/index.js'),
+    entry: path.join(__dirname, 'src/Init.js'),
     output:{
         filename: 'bundle.[hash:8].js',
         path: path.join(__dirname, 'dist')
@@ -106,7 +106,7 @@ if(isDev){
 }
 else{
     config.entry = {
-        app: path.join(__dirname, 'src/index.js'),
+        app: path.join(__dirname, 'src/Init.js'),
         // 将类库代码单独打包(变动少，可以长期在浏览器缓存，减轻服务器压力)
         vendor: ['vue']
     }
