@@ -4,9 +4,9 @@
   "description": "nextToDo api",
   "main": "nextToDoApi.js",
   "scripts": {
-	"testsUnit": "mocha test/tests-unit.js",
-	"testsApi": "mocha test/tests-api.js",
-	"start": "node nextToDoApi.js"
+    "testsUnit": "mocha test/tests-unit.js",
+    "testsApi": "mocha test/tests-api.js",
+    "start": "node nextToDoApi.js"
   },
   "keywords": [
     "express",
@@ -16,17 +16,17 @@
   "license": "MIT",
   "dependencies": {
     "amqp": "^0.2.7",
+    "bcrypt": "^3.0.4",
     "body-parser": "^1.18.3",
     "cheerio": "^1.0.0-rc.2",
     "compressing": "^1.4.0",
-    "cookie-parser": "^1.4.3",
     "crypto": "^1.0.1",
-    "csvtojson": "^2.0.8",
     "express": "^4.16.4",
-    "express-handlebars": "^3.0.0",
+    "express-validator": "^5.3.1",
+    "glob": "^7.1.3",
     "http-errors": "^1.7.1",
     "influx": "^5.0.7",
-    "json2csv": "^4.3.4",
+    "mongoose": "^5.4.14",
     "morgan": "^1.9.1",
     "redis": "^2.8.0",
     "request": "^2.88.0",

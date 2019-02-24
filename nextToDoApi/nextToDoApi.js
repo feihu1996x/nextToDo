@@ -1,16 +1,17 @@
 const createError = require('http-errors');
 const express = require('express');
-const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const config = require('./config');
 const router = require('./config/router');
-const { InitSchema } = require('./app/model/Init');
-const { ResponseJson } = require('./app/lib').Response;
-const { InitJobs } = require('./job/Init');
+const {InitSchema, Connect} = require('./app/model/Init');
+const {ResponseJson} = require('./app/lib').Response;
+const {InitJobs} = require('./job/Init');
+const mongoose = require('mongoose');
 
 const app = express();
 
+Connect(config.MONGODB);
 InitSchema();
 InitJobs();
 
@@ -19,12 +20,25 @@ app.disable('x-powered-by');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(express.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 app.use(function (req, res, next) {
-    next()
+    const checked_urls = config.AUTH_CHECKED_URLS;
+    const User = mongoose.model('User');
+    for (url of checked_urls) {
+        if (req.path.match(new RegExp(url))) {
+            const accessToken = req.headers['access-token'];
+            if (!accessToken) {
+                return ResponseJson(res, [], 'Not Authorized', 401);
+            } else {
+                 // TODO: 用accessToken换取user实例
+                req.user = {_id: '10002'};
+                return next()
+            }
+        }
+    }
+    return next()
 });
 
 app.use(config.URL_PREFIX, router);
