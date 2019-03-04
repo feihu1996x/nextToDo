@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-app.use(function (req, res, next) {
+app.use(async function (req, res, next) {
     const checked_urls = config.AUTH_CHECKED_URLS;
     const User = mongoose.model('User');
     for (url of checked_urls) {
@@ -32,9 +32,12 @@ app.use(function (req, res, next) {
             if (!accessToken) {
                 return ResponseJson(res, [], 'Not Authorized', 401);
             } else {
-                 // TODO: 用accessToken换取user实例
-                req.user = {_id: '10002'};
-                return next()
+                const user = await User.getUserFromAccessToken(accessToken);
+                if (user) {
+                    req.user = user;
+                    return next()
+                }
+                return ResponseJson(res, [], 'Not Authorized', 401);
             }
         }
     }

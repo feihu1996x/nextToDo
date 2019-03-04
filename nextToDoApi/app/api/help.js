@@ -25,6 +25,22 @@ exports.getHelp = async () => {
                 'title': 'Delete a Todo',
                 'type': 'application/json',
             }
+        },
+        {
+            'link': {
+                'rel': `POST ${config.URL_PREFIX}/user`,
+                'href': `${config.URL_PREFIX}/user`,
+                'title': 'User SignUp',
+                'type': "application/json",
+            }
+        },
+        {
+            'link': {
+                'rel': `PUT ${config.URL_PREFIX}/user`,
+                'href': `${config.URL_PREFIX}/user`,
+                'title': 'User SignIn',
+                'type': 'application/json',
+            }
         }
     ]
 };

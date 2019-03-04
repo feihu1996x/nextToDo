@@ -5,9 +5,13 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const config = require('../config');
 const server = require('../nextToDoApi');
+const uuidV4 = require('uuid/v4');
 
 let token = 'xx(S&5J1',
-    todoId = 1;
+    todoId = 1,
+    username = `test_${uuidV4()}`,
+    email = `test_${uuidV4()}@163.com`,
+    password = '0po$V7C&';
 
 chai.use(chaiHttp);
 chai.should();
@@ -27,6 +31,100 @@ describe('/', () => {
                 done();
             })
     }).timeout(1000)
+});
+
+describe('POST /user', () => {
+    it('should POST a user', (done) => {
+        chai.request(server)
+            .post(`${config.URL_PREFIX}/user`)
+            .send({
+                username: username,
+                email: email,
+                password: password,
+            })
+            .end((err, res) => {
+                if (err) {
+                    console.error(err)
+                } else {
+                    res.status.should.equal(200);
+                    console.debug(res.body);
+                }
+                done()
+            })
+    }).timeout(1000);
+    it('should GET 400 Response', (done) => {
+        chai.request(server)
+            .post(`${config.URL_PREFIX}/user`)
+            .send({
+                username,
+                email,
+                password,
+            })
+            .end((err, res) => {
+                if (err) {
+                    console.error(err);
+                } else {
+                    res.status.should.equal(400);
+                    console.debug(res.body);
+                }
+                done()
+            })
+    }).timeout(1000)
+});
+
+describe('PUT /user', () => {
+    it('should PUT a user', (done) => {
+        chai.request(server)
+            .put(`${config.URL_PREFIX}/user`)
+            .send({
+                account: username,
+                password,
+            })
+            .end((err, res) => {
+                if (err) {
+                    console.error(err)
+                } else {
+                    res.status.should.equal(200);
+                    token = res.body.data[0].accessToken;
+                    console.debug(res.body);
+                }
+                done()
+            })
+    }).timeout(1000);
+    it('should PUT a user', (done) => {
+        chai.request(server)
+            .put(`${config.URL_PREFIX}/user`)
+            .send({
+                account: email,
+                password,
+            })
+            .end((err, res) => {
+                if (err) {
+                    console.error(err)
+                } else {
+                    res.status.should.equal(200);
+                    console.debug(res.body);
+                }
+                done()
+            })
+    }).timeout(1000);
+    it('should GET 400 Response', (done) => {
+        chai.request(server)
+            .put(`${config.URL_PREFIX}/user`)
+            .send({
+                account: email,
+                password: '12343578',
+            })
+            .end((err, res) => {
+                if (err) {
+                    console.error(err)
+                } else {
+                    res.status.should.equal(400);
+                    console.debug(res.body);
+                }
+                done()
+            })
+    }).timeout(1000);
 });
 
 describe('GET /todo', () => {
@@ -116,7 +214,7 @@ describe('POST /todo', () => {
     })
 });
 
-describe('DELETE /todo:id', () => {
+describe('DELETE /todo/:id', () => {
     it('should DELETE a todo', (done) => {
         chai.request(server)
             .delete(`${config.URL_PREFIX}/todo/${todoId}`)

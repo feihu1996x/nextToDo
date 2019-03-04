@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+const uuidv4 = require('uuid/v4');
 const { SALT_WORK_FACTOR, MAX_LOGIN_ATTEMPTS, LOCK_TIME } = require('../../../config');
-const { hashPassword } = require('../../../utils');
+const { hashPassword,checkPassword } = require('../../../utils');
 
 const Schema = mongoose.Schema;
 const UserSchema = new Schema({
@@ -8,10 +9,18 @@ const UserSchema = new Schema({
         type: String,
         default: 'user',
     },
+    userId: {
+        type: String,
+        unique: true
+    },
     openId: [String],
     unionId: String,
     comeFrom: String,
     nickname: String,
+    username: {
+        type: String,
+        unique: true,
+    },
     address: String,
     province: String,
     country: String,
@@ -28,6 +37,9 @@ const UserSchema = new Schema({
         default: 0,
     },
     lockUntil: Number,
+    accessToken: {
+        type: String,
+    },
     meta: {
         createdAt: {
             type: Date,
@@ -68,18 +80,80 @@ UserSchema.pre('save', function (next) {
         });
 });
 
-UserSchema.methods = {
-    checkPassword(_password, password) {
-        return new Promise((resolve, reject) => {
-            bcrypt.compare(_password, password, (err, isMatch) => {
-                if (!err) {
-                    return resolve(isMatch)
-                } else {
-                    return reject(err)
-                }
-            })
-        })
+UserSchema.statics = {
+    async getUserFromAccessToken(accessToken) {
+        const userId = accessToken.split("::")[0];
+        const user = await User.findOne({userId});
+        if (user) {
+            const isMatch = await checkPassword(`${user.username}::${user.email}`, user.accessToken);
+            if (isMatch) {
+                return user
+            } else {
+                return null
+            }
+        } else {
+            return null
+        }
     },
+    async signUp(username, email, password) {
+        let user = await User.findOne({
+            $or: [
+                {username},
+                {email}
+            ]
+        });
+        if (user) {
+            let error = new Error('user exists!');
+            error.status = 400;
+            throw error
+        }
+        const userId = uuidv4();
+        const msg = `${username}::${email}`;
+        const accessToken = await hashPassword(msg, SALT_WORK_FACTOR);
+        user = new User({
+            username,
+            email,
+            password,
+            userId,
+            accessToken: accessToken
+        });
+        await user.save();
+        return {username, email}
+    },
+    async signIn(account, password) {
+        let user = await User.findOne({
+            $or: [
+                {username: account},
+                {email: account},
+            ]
+        }, {
+            _id: 0,
+            __v: 0,
+        });
+        if (!user) {
+            let error = new Error("user doesn't exist!");
+            error.status = 400;
+            throw error
+        }
+        if (user.isLocked) {
+            let error = new Error("current user is locked!");
+            error.status = 400;
+            throw error
+        }
+        let isMatch = await checkPassword(password, user.password);
+        if (!isMatch) {
+            await user.incLoginAttempts(user);
+            let error = new Error("password error");
+            error.status = 400;
+            throw error
+        }
+        return [{
+            accessToken: `${user.userId}::${user.accessToken}`
+        }]
+    }
+};
+
+UserSchema.methods = {
     incLoginAttempts(user) {
         let that = user;
         return new Promise((resolve, reject) => {
@@ -121,4 +195,4 @@ UserSchema.methods = {
     }
 };
 
-mongoose.model('User', UserSchema, 'users');
+const User = mongoose.model('User', UserSchema, 'users');
