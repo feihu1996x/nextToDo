@@ -14,3 +14,8 @@ exports.deleteTodo = async (userId, id) => {
     const Todo = mongoose.model('Todo');
     return await Todo.deleteTodo(userId, id);
 };
+
+exports.patchTodo = async (userId, todoId, content, completed) => {
+    const Todo = mongoose.model('Todo');
+    return await Todo.patchTodo(userId, todoId, content, completed);
+};
