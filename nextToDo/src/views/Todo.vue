@@ -15,6 +15,7 @@
                 v-for = "todo in filteredTodos"
                 :key = "todo.id"
                 @del = "deleteTodo"
+                @complete = "completeTodo"
                 >
                 </Item>
             </div>
@@ -35,7 +36,9 @@
     import NavFooter from '../components/Footer'
     import Item from '../components/Item'
     import Tabs from '../components/Tabs'
-    import Store from '../utils'
+    import { Store } from '../utils'
+    import * as Api from '../api'
+
     export default {
         name: "Todo",
         components: {
@@ -56,6 +59,15 @@
             layui.use('layer', () => {
                 this.layer = layui.layer;
             });
+            if (!this.todos || !this.todos.length) {
+                Api.GetTodo()
+                    .then((res) => {
+                        this.todos = res.data.data
+                    })
+                    .catch(() => {
+                        this.Auth()
+                    })
+            }
         },
         computed: {
             filteredTodos () {
@@ -67,27 +79,212 @@
             },
         },
         methods: {
+            Auth () {
+                var that = this;
+                layui.use('layer', function () {
+                    layer = layui.layer;
+                    const signIndex = layer.open({
+                        closeBtn: 0,
+                        type: 1,
+                        title: false,
+                        btn: ['登录', '注册'],
+                        btnAlign: 'c',
+                        btn2: function () {
+                            var username,
+                                email,
+                                password;
+                            const signUpIndex = layer.open({
+                                type: 1,
+                                title: false,
+                                btn: ['提交', '用户名', '邮箱', '密码'],
+                                btnAlign: 'c',
+                                yes: function (){
+                                    if (!username || !email || !password) {
+                                        layer.alert("请先输入用户名、邮箱和密码")
+                                    } else {
+                                        layer.close(signUpIndex);
+                                        Api.SignUp({username, email, password})
+                                            .then((res) => {
+                                                layer.confirm(
+                                                    `恭喜您，注册成功，用户名是${res.data.data[0].username}，邮箱是${res.data.data[0].email}`,
+                                                    {icon: 6, title:'提示'},
+                                                    function(index){
+                                                        layer.close(index);
+                                                    });
+                                            })
+                                            .catch(error => {
+                                                if (error.response.data) {
+                                                    layer.alert(error.response.data.msg)
+                                                }
+                                            })
+                                    }
+                                },
+                                btn2: function () {
+                                    layer.prompt({
+                                        formType: 0,
+                                        value: username,
+                                        title: '请输入用户名',
+                                        area: ['100px', '50px']
+                                    }, function(value, index, elem){
+                                        username = value;
+                                        layer.close(index);
+                                    });
+                                    return false
+                                },
+                                btn3: function () {
+                                    layer.prompt({
+                                        formType: 0,
+                                        value: email,
+                                        title: '请输入邮箱',
+                                        area: ['100px', '50px']
+                                    }, function(value, index, elem){
+                                        email = value;
+                                        layer.close(index);
+                                    });
+                                    return false
+                                },
+                                btn4: function () {
+                                    layer.prompt({
+                                        formType: 1,
+                                        value: password,
+                                        title: '请输入密码',
+                                        area: ['100px', '50px']
+                                    }, function(value, index, elem){
+                                        password = value;
+                                        layer.close(index);
+                                    });
+                                    return false
+                                }
+                            });
+                            return false
+                        },
+                        yes: function () {
+                            var account,
+                                password;
+                            const signInIndex = layer.open({
+                                type: 1,
+                                title: false,
+                                btn: ['提交', '用户名或邮箱', '密码'],
+                                btnAlign: 'c',
+                                yes: function () {
+                                    if (!account || !password) {
+                                        layer.alert("请先输入用户名和密码")
+                                    } else {
+                                        layer.close(signInIndex);
+                                        Api.SignIn({account, password})
+                                            .then((res) => {
+                                                layer.close(signIndex)
+                                                localStorage.setItem("accessToken", res.data.data[0].accessToken);
+                                                layer.confirm(
+                                                    `登录成功!`,
+                                                    {icon: 6, title:'提示'},
+                                                    function(index){
+                                                        Api.GetTodo()
+                                                            .then((res) => {
+                                                                that.todos = res.data.data
+                                                            })
+                                                            .catch(() => {
+                                                                that.Auth()
+                                                            });
+                                                        layer.close(index);
+                                                    });
+                                            })
+                                            .catch((error) => {
+                                                if (error.response.data) {
+                                                    layer.alert(error.response.data.msg)
+                                                }
+                                            })
+                                    }
+                                },
+                                btn2: function () {
+                                    layer.prompt({
+                                        formType: 0,
+                                        value: account,
+                                        title: '请输入用户名或邮箱',
+                                        area: ['100px', '50px']
+                                    }, function(value, index, elem){
+                                        account = value;
+                                        layer.close(index);
+                                    });
+                                    return false
+                                },
+                                btn3: function () {
+                                    layer.prompt({
+                                        formType: 1,
+                                        value: password,
+                                        title: '请输入密码',
+                                        area: ['100px', '50px']
+                                    }, function(value, index, elem){
+                                        password = value;
+                                        layer.close(index);
+                                    });
+                                    return false
+                                }
+                            })
+                        },
+                    });
+                });
+            },
             addTodo (e) {
                 let id = this.todos.length ? this.todos[0].id : 0;
                 if ('' === e.target.value) {
                     this.layer.msg('你什么都没有添加哦！', {icon: 5});
                 } else {
-                    this.todos.unshift({
+                    const body = {
                         id: ++id,
                         content: e.target.value.trim(),
-                        completed: false
-                    });
+                    };
+                    Api.PostTodo(body)
+                        .then((res) => {
+                            this.todos.unshift({
+                                id: res.data.data[0].id,
+                                content: res.data.data[0].content,
+                                completed: false
+                            })
+                        })
+                        .catch(error => {
+                            this.layer.msg(error.response.data.msg, {icon: 5})
+                        });
                     e.target.value = '';
                 }
             },
             deleteTodo (id) {
-                this.todos.splice(this.todos.findIndex(todo => id === todo.id), 1)
+                Api.DeleteTodo(id)
+                    .then(() => {
+                        this.todos.splice(this.todos.findIndex(todo => id === todo.id), 1)
+                    })
+                    .catch(error => {
+                        this.layer.msg(error.response.data.msg, {icon: 5})
+                    })
+            },
+            completeTodo (id, completed) {
+                const index = this.todos.findIndex(todo => id === todo.id);
+                Api.PatchTodo(id, {completed})
+                    .then(() => {
+                        this.todos[index].completed = completed;
+                    })
+                    .catch(error => {
+                        this.todos[index].completed = !this.todos[index].completed;
+                        this.layer.msg(error.response.data.msg, {icon: 5})
+                    })
             },
             toggleFilter (state) {
                 this.filter = state
             },
             clearAllCompleted () {
-                this.todos = this.todos.filter(todo => !todo.completed)
+                let apiPromiseArray = [];
+                for (let todo of this.todos) {
+                    if (todo.completed) {
+                        apiPromiseArray.push(Api.DeleteTodo(todo.id))
+                    }
+                }
+                Promise.all(apiPromiseArray)
+                    .then(() => {
+                        this.todos = this.todos.filter(todo => !todo.completed)
+                    })
+                    .catch(() => {
+                        this.layer.msg("something went wrong, please try again", {icon: 5})
+                    });
             }
         },
         watch: {
