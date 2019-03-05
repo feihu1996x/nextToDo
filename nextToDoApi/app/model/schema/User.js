@@ -85,7 +85,7 @@ UserSchema.statics = {
         const userId = accessToken.split("::")[0];
         const user = await User.findOne({userId});
         if (user) {
-            const isMatch = await checkPassword(`${user.username}::${user.email}`, user.accessToken);
+            const isMatch = await checkPassword(`${user.username}::${user.email}`, accessToken.split("::")[1]);
             if (isMatch) {
                 return user
             } else {
