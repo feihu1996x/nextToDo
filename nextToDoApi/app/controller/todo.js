@@ -35,6 +35,19 @@ exports.deleteTodo = async (req, res) => {
     }
 };
 
+exports.patchTodo = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const todoId = req.params.id;
+        const { content, completed } = req.body;
+        const data = await api.Todo.patchTodo(userId, todoId, content, completed);
+        return ResponseJson(res, data);
+    } catch (error) {
+        console.error(error);
+        return ResponseJson(res, [], 'soomething went wrong', error.status || 500);
+    }
+}
+
 exports.postTodoValidator = [
     check('id').isDecimal(),
     check('content').isString(),

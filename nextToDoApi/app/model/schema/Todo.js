@@ -86,6 +86,30 @@ TodoSchema.statics = {
         todo.deleted = true;
         await todo.save();
         return [];
+    },
+    async patchTodo(userId, id, content, completed) {
+        let todo = await this.findOne({
+            userId,
+            id,
+        });
+        if (!todo) {
+            let error = new Error('todo does not exist');
+            error.status = 400;
+            throw error
+        }
+        if (content) {
+            todo.content = content;
+            await todo.save()
+        }
+        if (completed) {
+            todo.completed = completed;
+            await todo.save()
+        }
+        return [{
+            id,
+            content,
+            completed
+        }]
     }
 };
 

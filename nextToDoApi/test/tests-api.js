@@ -214,6 +214,26 @@ describe('POST /todo', () => {
     })
 });
 
+describe('PATHC /todo/:id', function () {
+    it('should PATCH a todo', (done) => {
+        chai.request(server)
+        .patch(`${config.URL_PREFIX}/todo/${todoId}`)
+        .set('Access-Token', token)
+        .send({
+            completed: true
+        })
+        .end((err, res) => {
+            if (err) {
+                console.error(err)
+            } else {
+                res.status.should.equal(200)
+                console.debug(res.body)
+            }
+            done()
+        })
+    }).timeout(1000)
+});
+
 describe('DELETE /todo/:id', () => {
     it('should DELETE a todo', (done) => {
         chai.request(server)
