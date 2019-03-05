@@ -23,6 +23,14 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
+app.use(function (req, res, next) {
+   res.header('Access-Control-Allow-Origin', '*');
+   res.header('Access-Control-Allow-Methods', '*');
+   res.header('Access-Control-Allow-Headers', '*');
+   res.header('Access-Control-Allow-Credentials','true');
+   next();
+});
+
 app.use(async function (req, res, next) {
     const checked_urls = config.AUTH_CHECKED_URLS;
     const User = mongoose.model('User');
