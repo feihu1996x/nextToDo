@@ -118,7 +118,7 @@ UserSchema.statics = {
             accessToken: accessToken
         });
         await user.save();
-        return {username, email}
+        return [{username, email}]
     },
     async signIn(account, password) {
         let user = await User.findOne({

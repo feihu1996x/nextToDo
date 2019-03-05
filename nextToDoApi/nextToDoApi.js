@@ -35,7 +35,7 @@ app.use(async function (req, res, next) {
     const checked_urls = config.AUTH_CHECKED_URLS;
     const User = mongoose.model('User');
     for (url of checked_urls) {
-        if (req.path.match(new RegExp(url))) {
+        if (req.path.match(new RegExp(url)) && "OPTIONS" !== req.method) {
             const accessToken = req.headers['access-token'];
             if (!accessToken) {
                 return ResponseJson(res, [], 'Not Authorized', 401);
