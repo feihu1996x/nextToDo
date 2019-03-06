@@ -55,19 +55,16 @@
             }
         },
         mounted() {
-            this.todos = Store.fetch();
             layui.use('layer', () => {
                 this.layer = layui.layer;
             });
-            if (!this.todos || !this.todos.length) {
-                Api.GetTodo()
-                    .then((res) => {
-                        this.todos = res.data.data
-                    })
-                    .catch(() => {
-                        this.Auth()
-                    })
-            }
+            Api.GetTodo()
+                .then((res) => {
+                    this.todos = res.data.data
+                })
+                .catch(() => {
+                    this.Auth()
+                })
         },
         computed: {
             filteredTodos () {
@@ -173,7 +170,7 @@
                                         layer.close(signInIndex);
                                         Api.SignIn({account, password})
                                             .then((res) => {
-                                                layer.close(signIndex)
+                                                layer.close(signIndex);
                                                 localStorage.setItem("accessToken", res.data.data[0].accessToken);
                                                 layer.confirm(
                                                     `登录成功!`,
@@ -290,7 +287,7 @@
         watch: {
             todos: {
                 handler: function (todos) {
-                    Store.save(todos)
+                    // Store.save(todos)
                 },
                 deep: true,
             }
