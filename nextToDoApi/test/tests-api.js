@@ -226,11 +226,30 @@ describe('PATHC /todo/:id', function () {
             if (err) {
                 console.error(err)
             } else {
-                res.status.should.equal(200)
+                res.status.should.equal(200);
+                res.body.data[0].completed.should.equal(true);
                 console.debug(res.body)
             }
             done()
         })
+    }).timeout(1000);
+    it('should PATCH a todo', (done) => {
+        chai.request(server)
+            .patch(`${config.URL_PREFIX}/todo/${todoId}`)
+            .set('Access-Token', token)
+            .send({
+                completed: false
+            })
+            .end((err, res) => {
+                if (err) {
+                    console.error(err)
+                } else {
+                    res.status.should.equal(200);
+                    res.body.data[0].completed.should.equal(false);
+                    console.debug(res.body);
+                }
+                done()
+            })
     }).timeout(1000)
 });
 
