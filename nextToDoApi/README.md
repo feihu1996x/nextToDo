@@ -4,6 +4,9 @@ nextToDoApi
 > nextToDo api
 
 ```bash
+# data restore
+mongorestore 
+
 # install all dependencies
 npm install
 
