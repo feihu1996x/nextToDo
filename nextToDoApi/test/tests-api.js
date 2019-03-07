@@ -127,6 +127,57 @@ describe('PUT /user', () => {
     }).timeout(1000);
 });
 
+
+describe('POST /todo', () => {
+    it('should POST a todo', (done) => {
+        chai.request(server)
+            .post(config.URL_PREFIX + '/todo')
+            .set('Access-Token', token)
+            .send({
+                content: '兰洁，我想你',
+            })
+            .end((err, res) => {
+                if (err) {
+                    console.error(err)
+                } else {
+                    res.status.should.equal(200);
+                    console.debug(res.body);
+                }
+                done()
+            })
+    }).timeout(1000);
+    it('should GET 400 Response', (done) => {
+        chai.request(server)
+            .post(config.URL_PREFIX + '/todo')
+            .set('Access-Token', token)
+            .end((err, res) => {
+                if (err) {
+                    console.error(err)
+                } else {
+                    res.status.should.equal(400);
+                    console.debug(res.body);
+                }
+                done()
+            })
+    }).timeout(1000);
+    it('should GET 401 Response', (done) => {
+        chai.request(server)
+            .post(config.URL_PREFIX + '/todo')
+            .send({
+                content: '兰洁，我想你',
+            })
+            .end((err, res) => {
+                if (err) {
+                    console.error(err)
+                } else {
+                    res.status.should.equal(401);
+                    console.debug(res.body);
+                }
+                done()
+            })
+    })
+});
+
 describe('GET /todo', () => {
     it('should GET todo list', (done) => {
         chai.request(server)
@@ -137,6 +188,7 @@ describe('GET /todo', () => {
                     console.error(err)
                 } else {
                     res.status.should.equal(200);
+                    todoId = res.body.data[0].id;
                     console.debug(res.body);
                     res.body.should.be.an('object');
                 }
@@ -159,62 +211,7 @@ describe('GET /todo', () => {
     }).timeout(1000);
 });
 
-describe('POST /todo', () => {
-    it('should POST a todo', (done) => {
-        chai.request(server)
-            .post(config.URL_PREFIX + '/todo')
-            .set('Access-Token', token)
-            .send({
-                id: todoId,
-                content: '兰洁，我想你',
-            })
-            .end((err, res) => {
-                if (err) {
-                    console.error(err)
-                } else {
-                    res.status.should.equal(200);
-                    console.debug(res.body);
-                }
-                done()
-            })
-    }).timeout(1000);
-    it('should GET 400 Response', (done) => {
-        chai.request(server)
-            .post(config.URL_PREFIX + '/todo')
-            .set('Access-Token', token)
-            .send({
-                id: todoId
-            })
-            .end((err, res) => {
-                if (err) {
-                    console.error(err)
-                } else {
-                    res.status.should.equal(400);
-                    console.debug(res.body);
-                }
-                done()
-            })
-    }).timeout(1000);
-    it('should GET 401 Response', (done) => {
-        chai.request(server)
-            .post(config.URL_PREFIX + '/todo')
-            .send({
-                id: 1,
-                content: '兰洁，我想你',
-            })
-            .end((err, res) => {
-                if (err) {
-                    console.error(err)
-                } else {
-                    res.status.should.equal(401);
-                    console.debug(res.body);
-                }
-                done()
-            })
-    })
-});
-
-describe('PATHC /todo/:id', function () {
+describe('PATCH /todo/:id', function () {
     it('should PATCH a todo', (done) => {
         chai.request(server)
         .patch(`${config.URL_PREFIX}/todo/${todoId}`)

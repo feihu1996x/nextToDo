@@ -14,8 +14,8 @@ exports.getTodo = async (req, res) => {
 
 exports.postTodo = async (req, res) => {
     try {
-        const { id, content } = req.body;
-        const data = await api.Todo.postTodo(req.user._id, id, content);
+        const { content } = req.body;
+        const data = await api.Todo.postTodo(req.user._id, content);
         return ResponseJson(res, data);
     } catch (error) {
         console.error(error);
@@ -49,13 +49,12 @@ exports.patchTodo = async (req, res) => {
 }
 
 exports.postTodoValidator = [
-    check('id').isDecimal(),
     check('content').isString(),
     endValidate
 ];
 
 exports.deleteTodoValidator = [
-    param('id').isDecimal(),
+    param('id').isString(),
     endValidate,
 ];
 

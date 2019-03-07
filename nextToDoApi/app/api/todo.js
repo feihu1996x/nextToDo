@@ -5,9 +5,9 @@ exports.getTodo = async (userId) => {
     return await Todo.getTodo(userId);
 };
 
-exports.postTodo = async (userId, id, content) => {
+exports.postTodo = async (userId, content) => {
     const Todo = mongoose.model('Todo');
-    return await Todo.saveTodo(userId, id, content);
+    return await Todo.saveTodo(userId, content);
 };
 
 exports.deleteTodo = async (userId, id) => {

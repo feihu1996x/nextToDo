@@ -112,6 +112,8 @@
                                             .catch(error => {
                                                 if (error.response.data) {
                                                     layer.alert(error.response.data.msg)
+                                                } else {
+                                                    layer.alert("something went wrong, please try again.")
                                                 }
                                             })
                                     }
@@ -189,6 +191,8 @@
                                             .catch((error) => {
                                                 if (error.response.data) {
                                                     layer.alert(error.response.data.msg)
+                                                } else {
+                                                    layer.alert("something went wrong, please try again.")
                                                 }
                                             })
                                     }
@@ -223,24 +227,25 @@
                 });
             },
             addTodo (e) {
-                let id = this.todos.length ? this.todos[0].id : 0;
                 if ('' === e.target.value) {
                     this.layer.msg('你什么都没有添加哦！', {icon: 5});
                 } else {
                     const body = {
-                        id: ++id,
                         content: e.target.value.trim(),
                     };
                     Api.PostTodo(body)
                         .then((res) => {
                             this.todos.unshift({
-                                id: res.data.data[0].id,
                                 content: res.data.data[0].content,
                                 completed: false
                             })
                         })
                         .catch(error => {
-                            this.layer.msg(error.response.data.msg, {icon: 5})
+                            if (error.response.data.msg) {
+                                this.layer.msg(error.response.data.msg, {icon: 5})
+                            } else {
+                                this.layer.msg("something went wrong, please try again.")
+                            }
                         });
                     e.target.value = '';
                 }
@@ -251,7 +256,11 @@
                         this.todos.splice(this.todos.findIndex(todo => id === todo.id), 1)
                     })
                     .catch(error => {
-                        this.layer.msg(error.response.data.msg, {icon: 5})
+                        if (error.response.data.msg) {
+                            this.layer.msg(error.response.data.msg, {icon: 5})
+                        } else {
+                            this.layer.msg("something went wrong, please try again.")
+                        }
                     })
             },
             completeTodo (id, completed) {
@@ -262,7 +271,11 @@
                     })
                     .catch(error => {
                         this.todos[index].completed = !this.todos[index].completed;
-                        this.layer.msg(error.response.data.msg, {icon: 5})
+                        if (error.response.data.msg) {
+                            this.layer.msg(error.response.data.msg, {icon: 5})
+                        } else {
+                            this.layer.msg("something went wrong, please try again.")
+                        }
                     })
             },
             toggleFilter (state) {

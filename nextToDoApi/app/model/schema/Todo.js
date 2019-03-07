@@ -1,16 +1,14 @@
 const mongoose = require('mongoose');
+const uuidv4 = require('uuid/v4');
 
 const Schema = mongoose.Schema;
-const ObjectId = Schema.Types.ObjectId;
 
 const TodoSchema = new Schema({
     userId: {
-        // type: ObjectId,
-        // ref: 'User',
         type: String,
     },
     id: {
-        type: Number,
+        type: String,
     },
     content: String,
     completed: {
@@ -21,26 +19,7 @@ const TodoSchema = new Schema({
         type: Boolean,
         default: false
     },
-    meta: {
-        createdAt: {
-            type: Date,
-            default: Date.now(),
-        },
-        updatedAt: {
-            type: Date,
-            default: Date.now(),
-        }
-    }
-});
-
-TodoSchema.pre('save', function (next) {
-    if (this.isNew) {
-        this.meta.createdAt = this.meta.updatedAt = Date.now();
-    } else {
-        this.meta.updatedAt = Date.now();
-    }
-    next();
-});
+}, { timestamps: {}});
 
 TodoSchema.statics = {
     async getTodo(userId) {
@@ -53,24 +32,22 @@ TodoSchema.statics = {
             deleted: 0,
             meta: 0,
             __v: 0,
+        }, {
+            sort: {
+                createdAt: -1
+            },
         })
     },
-    async saveTodo(userId, id, content) {
-        let todo = await this.findOne({
-            userId: userId,
-            id: id,
-        });
-        if (!todo) {
-            todo = new Todo({
-                userId,
-                id,
-                content,
-            });
-            await todo.save();
-        }
-        return [{
-            id,
+    async saveTodo(userId, content) {
+        const todo = new Todo({
+            userId,
+            id: uuidv4(),
             content,
+        });
+        await todo.save();
+        return [{
+            id: todo.id,
+            content: todo.content,
         }]
     },
     async deleteTodo(userId, id) {
